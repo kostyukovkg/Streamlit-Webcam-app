@@ -1,4 +1,5 @@
 import smtplib, mimetypes
+import streamlit as st
 
 def attach_bytesio_to_email(email, buf, filename):
     """Attach a file identified by filename, to an email message"""
