@@ -6,7 +6,7 @@ from email.message import EmailMessage
 
 st.title('A simple webcam app')
 
-img_file_buffer = st.camera_input("Here you can take a picture and send it to your email") # UploadedFile object
+img_file_buffer = st.camera_input("You can take a picture and send it to any email you choose") # UploadedFile object
 
 if img_file_buffer is not None:
     # To read image file buffer as a PIL Image:
@@ -14,15 +14,17 @@ if img_file_buffer is not None:
 
     st.image(img)
 
-    bytes_img = img_file_buffer.getvalue()
+    bytes_img = img_file_buffer.getvalue() # Bytes image
     # Email form to send a picture. Enter.
     with st.form(key="main_form"):
+        user_msg = st.text_area("Please enter your message to the recipient (if you want)")
+        user_msg = user_msg + \
+                   '\n\n\n\nDisclaimer:' \
+                   '\nThis message and photo were created on https://kkg-webcam-app.streamlit.app/' \
+                   '\nYou can check my other projects on https://kkgweb.streamlit.app/'
+        user_email = st.text_input("Please enter the recipient's email")
 
-        user_email = st.text_input(
-            "Please enter your email address and I will send your photo")
-
-        button = st.form_submit_button(
-            'Send email')  # special button that submits text for the form.
+        button = st.form_submit_button('Send email')  # special button that submits text for the form.
 
         if button:
             # Attach files
@@ -31,10 +33,12 @@ if img_file_buffer is not None:
 
             # Create message and set text content
             msg = EmailMessage()
-            msg['Subject'] = 'This is your photo!'
-            msg['From'] = "uefaticket2023@gmail.com"
+            msg['Subject'] = 'Hello! You have a new photo from kkg-webcam-app!'
+            msg['From'] = st.secrets["gmail_email"]
             msg['To'] = user_email
-            msg.set_content('Please see the attached file.')
+            msg.set_content(user_msg)
 
-            send_email.attach_bytesio_to_email(msg, buf, "your_photo.png")
-            send_email.send_mail_smtp(msg, 'smtp.gmail.com', 'uefaticket2023@gmail.com')
+            send_email.attach_bytesio_to_email(msg, buf, "kkg_webcam_app_photo.png")
+            send_email.send_mail_smtp(msg, 'smtp.gmail.com', msg['From'])
+
+            st.info("Your email was sent successfully")
