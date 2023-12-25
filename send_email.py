@@ -1,0 +1,21 @@
+import smtplib, mimetypes
+
+def attach_bytesio_to_email(email, buf, filename):
+    """Attach a file identified by filename, to an email message"""
+    # Reset read position & extract data
+    buf.seek(0)
+    binary_data = buf.read()
+    # Guess MIME type or use 'application/octet-stream'
+    maintype, _, subtype = (mimetypes.guess_type(filename)[0] or 'application/octet-stream').partition("/")
+    # Add as attachment
+    email.add_attachment(binary_data, maintype=maintype, subtype=subtype, filename=filename)
+
+def send_mail_smtp(mail, host, username, password = st.secrets["gmail_key"]):
+    s = smtplib.SMTP(host)
+    s.starttls()
+    #password = os.getenv('PASSWORD')  # .zshrc folder in the root
+    s.login(username, password)
+    s.send_message(mail)
+    s.quit()
+
+
