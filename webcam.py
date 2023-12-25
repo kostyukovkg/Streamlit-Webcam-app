@@ -32,9 +32,9 @@ if img_file_buffer is not None:
             # Create message and set text content
             msg = EmailMessage()
             msg['Subject'] = 'This is your photo!'
-            msg['From'] = "uefaticket2023@gmail.com"
+            msg['From'] = st.secrets["gmail_email"]
             msg['To'] = user_email
             msg.set_content('Please see the attached file.')
 
             send_email.attach_bytesio_to_email(msg, buf, "your_photo.png")
-            send_email.send_mail_smtp(msg, 'smtp.gmail.com', 'uefaticket2023@gmail.com')
+            send_email.send_mail_smtp(msg, 'smtp.gmail.com', msg['From'])
