@@ -14,7 +14,6 @@ def attach_bytesio_to_email(email, buf, filename):
 def send_mail_smtp(msg, host, username, password = st.secrets["gmail_key"]):
     s = smtplib.SMTP(host)
     s.starttls()
-    #password = os.getenv('PASSWORD')  # .zshrc folder in the root
     s.login(username, password)
     s.send_message(msg)
     s.quit()
