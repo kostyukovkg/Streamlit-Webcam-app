@@ -11,6 +11,7 @@ def attach_bytesio_to_email(email, buf, filename):
     # Add as attachment
     email.add_attachment(binary_data, maintype=maintype, subtype=subtype, filename=filename)
 
+
 def send_mail_smtp(msg, host, username, password = st.secrets["gmail_key"]):
     s = smtplib.SMTP(host)
     s.starttls()

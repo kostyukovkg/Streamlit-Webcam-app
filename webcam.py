@@ -26,6 +26,7 @@ if img_file_buffer is not None:
 
         button = st.form_submit_button('Send email')  # special button that submits text for the form.
 
+
         if button:
             # Attach files
             buf = BytesIO()
