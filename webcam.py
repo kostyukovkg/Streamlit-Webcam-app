@@ -4,7 +4,7 @@ import send_email
 from io import BytesIO
 from email.message import EmailMessage
 
-st.title('A simple webcam app')
+st.title('Photo Booth')
 
 img_file_buffer = st.camera_input("You can take a picture and send it to any email you choose") # UploadedFile object
 
@@ -20,7 +20,7 @@ if img_file_buffer is not None:
         user_msg = st.text_area("Please enter your message to the recipient (if you want)")
         user_msg = user_msg + \
                    '\n\n\n\nDisclaimer:' \
-                   '\nThis message and photo were created on https://kkg-webcam-app.streamlit.app/' \
+                   '\nThis message and photo were created on https://kkg-photo-booth.streamlit.app/' \
                    '\nYou can check my other projects on https://kkgweb.streamlit.app/'
         user_email = st.text_input("Please enter the recipient's email")
 
@@ -34,12 +34,12 @@ if img_file_buffer is not None:
 
             # Create message and set text content
             msg = EmailMessage()
-            msg['Subject'] = 'Hello! You have a new photo from kkg-webcam-app!'
+            msg['Subject'] = 'Hello! You have a new photo from Photo Booth!'
             msg['From'] = st.secrets["gmail_email"]
             msg['To'] = user_email
             msg.set_content(user_msg)
 
-            send_email.attach_bytesio_to_email(msg, buf, "kkg_webcam_app_photo.png")
+            send_email.attach_bytesio_to_email(msg, buf, "kkg_photo_booth.png")
             send_email.send_mail_smtp(msg, 'smtp.gmail.com', msg['From'])
 
             st.info("Your email was sent successfully")
